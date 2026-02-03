@@ -26,16 +26,6 @@ This platform introduces a behavior-aware governance layer that dynamically regu
 ## 📌 Project Status
 🟡 Phase 1 completed – Project initialization and basic server setup
 
-## 📂 Folder Structure
-src/
-├── app.js
-├── server.js
-├── routes/
-├── controllers/
-├── services/
-├── middlewares/
-└── utils/
-
 ## 📈 Learning Outcomes
 - Cloud-native backend design
 - Intelligent API governance patterns
