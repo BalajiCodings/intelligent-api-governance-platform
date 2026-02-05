@@ -2,6 +2,7 @@ import express from "express";
 import v1Routes from "./routes/v1/index.js";
 import apiGatewayMiddleware from "./middlewares/apiGateway.middleware.js";
 import usageTrackerMiddleware from "./middlewares/usageTracker.middleware.js";
+import rateLimiterMiddleware from "./middlewares/rateLimiter.middleware.js";
 
 const app = express();
 
@@ -14,12 +15,11 @@ app.get("/health", (req, res) => {
     });
 });
 
-// Request Flow:
-// API Gateway → Usage Tracker → API Routes
 app.use(
     "/api/v1",
     apiGatewayMiddleware,
     usageTrackerMiddleware,
+    rateLimiterMiddleware,
     v1Routes
 );
 
