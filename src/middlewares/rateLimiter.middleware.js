@@ -1,17 +1,24 @@
 import RateLimiter from "../services/rateLimiter.service.js";
+import PolicyEngine from "../services/policyEngine.service.js";
 
 const rateLimiterMiddleware = (req, res, next) => {
     const { tier } = req.consumer;
+    const endpoint = req.originalUrl;
     const { count } = req.usage;
 
-    const decision = RateLimiter.checkLimit({
+    const policy = PolicyEngine.getPolicy({
         tier,
-        requestCount: count
+        endpoint
+    });
+
+    const decision = RateLimiter.checkLimit({
+        requestCount: count,
+        policy
     });
 
     if (!decision.allowed) {
         return res.status(429).json({
-            message: "Too many requests",
+            message: "Request blocked by policy",
             reason: decision.reason
         });
     }

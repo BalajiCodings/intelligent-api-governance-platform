@@ -1,17 +1,13 @@
-import rateLimitConfig from "../config/rateLimit.config.js";
-
 class RateLimiter {
-    static checkLimit({ tier, requestCount }) {
-        const config = rateLimitConfig[tier];
-
-        if (!config) {
+    static checkLimit({ requestCount, policy }) {
+        if (!policy) {
             return {
                 allowed: false,
-                reason: "Invalid consumer tier"
+                reason: "No policy defined"
             };
         }
 
-        if (requestCount > config.maxRequests) {
+        if (requestCount > policy.maxRequests) {
             return {
                 allowed: false,
                 reason: "Rate limit exceeded"
