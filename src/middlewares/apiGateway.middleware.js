@@ -1,12 +1,23 @@
+import ConsumerService from "../services/consumer.service.js";
+
 /**
- * Simulated API Gateway Middleware
- * This represents AWS API Gateway behavior
+ * Simulated API Gateway with API key validation
  */
 const apiGatewayMiddleware = (req, res, next) => {
-    // Simulate API consumer identity
+    const apiKey = req.headers["x-api-key"];
+
+    const consumer = ConsumerService.getConsumerByApiKey(apiKey);
+
+    if (!consumer) {
+        return res.status(401).json({
+            message: "Invalid or missing API key"
+        });
+    }
+
+    // Attach verified consumer
     req.consumer = {
-        consumerId: req.headers["x-api-key"] || "anonymous",
-        tier: "FREE"
+        consumerId: consumer.consumerId,
+        tier: consumer.tier
     };
 
     // Attach request metadata
