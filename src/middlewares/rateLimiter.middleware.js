@@ -1,15 +1,13 @@
 import RateLimiter from "../services/rateLimiter.service.js";
 import PolicyEngine from "../services/policyEngine.service.js";
+import { info, warn } from "../utils/logger.js";
 
 const rateLimiterMiddleware = (req, res, next) => {
-    const { tier } = req.consumer;
+    const { tier, consumerId } = req.consumer;
     const endpoint = req.originalUrl;
     const { count } = req.usage;
 
-    const policy = PolicyEngine.getPolicy({
-        tier,
-        endpoint
-    });
+    const policy = PolicyEngine.getPolicy({ tier, endpoint });
 
     const decision = RateLimiter.checkLimit({
         requestCount: count,
@@ -17,11 +15,29 @@ const rateLimiterMiddleware = (req, res, next) => {
     });
 
     if (!decision.allowed) {
+        warn("Request blocked by policy", {
+            consumerId,
+            tier,
+            endpoint,
+            requestCount: count
+        });
+
+        MetricsService.increment("blockedRequests");
+
         return res.status(429).json({
             message: "Request blocked by policy",
             reason: decision.reason
         });
     }
+
+    info("Request allowed", {
+        consumerId,
+        tier,
+        endpoint,
+        requestCount: count
+    });
+
+    MetricsService.increment("allowedRequests");
 
     next();
 };
