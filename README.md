@@ -23,11 +23,28 @@ This platform introduces a behavior-aware governance layer that dynamically regu
 - AWS (API Gateway, ECS, CloudWatch)
 - Prometheus & Grafana
 
-## 📌 Project Status
-🟡 Phase 1 completed – Project initialization and basic server setup
+---
 
-## 📈 Learning Outcomes
-- Cloud-native backend design
-- Intelligent API governance patterns
-- Scalable system architecture
-- Real-world DevOps workflows
+## 🚦 Project Status
+
+✅ Phase 1 – Project initialization & ES6 setup  
+✅ Phase 2 – API routes & simulated API Gateway  
+✅ Phase 3 – Usage tracking with Redis  
+✅ Phase 4 – Rate limiting engine  
+✅ Phase 5 – Policy engine  
+✅ Phase 6 – Consumer management & API keys  
+✅ Phase 7 – Observability & metrics  
+
+🔜 Phase 8 – Dockerization & cloud deployment
+
+---
+
+## 🎓 Learning Outcomes
+
+- Real-world API governance design
+- Distributed rate limiting concepts
+- Clean architecture & separation of concerns
+- Cloud-native backend thinking
+- Observability-first system design
+
+---
