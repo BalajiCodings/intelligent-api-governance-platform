@@ -1,15 +1,12 @@
-import policies from "../data/policies.data.js";
+import Policy from "../models/policy.model.js";
 
 class PolicyEngine {
-    static getPolicy({ tier, endpoint }) {
-        const policy = policies.find(
-            (p) =>
-                p.tier === tier &&
-                p.endpoint === endpoint &&
-                p.active === true
-        );
-
-        return policy || null;
+    static async getPolicy({ tier, endpoint }) {
+        return await Policy.findOne({
+            tier,
+            endpoint,
+            active: true
+        }).lean();
     }
 }
 

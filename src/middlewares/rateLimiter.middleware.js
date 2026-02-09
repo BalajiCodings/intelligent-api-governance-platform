@@ -2,12 +2,12 @@ import RateLimiter from "../services/rateLimiter.service.js";
 import PolicyEngine from "../services/policyEngine.service.js";
 import { info, warn } from "../utils/logger.js";
 
-const rateLimiterMiddleware = (req, res, next) => {
+const rateLimiterMiddleware = async (req, res, next) => {
     const { tier, consumerId } = req.consumer;
     const endpoint = req.originalUrl;
     const { count } = req.usage;
 
-    const policy = PolicyEngine.getPolicy({ tier, endpoint });
+    const policy = await PolicyEngine.getPolicy({ tier, endpoint });
 
     const decision = RateLimiter.checkLimit({
         requestCount: count,

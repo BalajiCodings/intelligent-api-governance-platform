@@ -1,10 +1,17 @@
 import dotenv from "dotenv";
 import app from "./app.js";
+import connectMongoDB from "./config/mongo.config.js";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`API Governance Server running on port ${PORT}`);
-});
+const startServer = async () => {
+    await connectMongoDB();
+
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+};
+
+startServer();

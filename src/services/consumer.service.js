@@ -1,14 +1,13 @@
-import consumers from "../data/consumers.data.js";
+import Consumer from "../models/consumer.model.js";
 
 class ConsumerService {
-    static getConsumerByApiKey(apiKey) {
+    static async getConsumerByApiKey(apiKey) {
         if (!apiKey) return null;
 
-        return consumers.find(
-            (consumer) =>
-                consumer.apiKey === apiKey &&
-                consumer.active === true
-        );
+        return await Consumer.findOne({
+            apiKey,
+            active: true
+        }).lean();
     }
 }
 
