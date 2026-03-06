@@ -1,0 +1,88 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Intelligent API Governance Platform",
+    "description": "Cloud-native API governance backend integrated with EC2 instance."
+  },
+  "schemes": ["http"],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health Check Endpoint",
+        "description": "Checks whether the backend service is running.",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Service is healthy"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": "http://ec2-3-111-37-199.ap-south-1.compute.amazonaws.com:3000/health",
+          "httpMethod": "GET",
+          "type": "http_proxy",
+          "passthroughBehavior": "when_no_match"
+        }
+      }
+    },
+    "/api/v1/test/test": {
+      "get": {
+        "summary": "Test API Endpoint",
+        "description": "Sample API protected by governance engine.",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid API Key"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": "http://ec2-3-111-37-199.ap-south-1.compute.amazonaws.com:3000/api/v1/test/test",
+          "httpMethod": "GET",
+          "type": "http_proxy",
+          "passthroughBehavior": "when_no_match"
+        }
+      }
+    },
+    "/api/v1/metrics": {
+      "get": {
+        "summary": "Metrics Endpoint",
+        "description": "Returns governance metrics such as allowed and blocked requests.",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Metrics response"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": "http://ec2-3-111-37-199.ap-south-1.compute.amazonaws.com:3000/api/v1/metrics",
+          "httpMethod": "GET",
+          "type": "http_proxy",
+          "passthroughBehavior": "when_no_match"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "x-api-key",
+      "in": "header"
+    }
+  }
+}
